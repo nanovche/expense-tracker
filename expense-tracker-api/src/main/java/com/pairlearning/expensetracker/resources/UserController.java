@@ -12,19 +12,31 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
-public class UserResource {
+public class UserController {
 
     @Autowired
     UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> loginUser(@RequestBody Map<String, Object> userMap){
+    public ResponseEntity<Map<String, String>> loginUser(@RequestBody Map<String, Object> userMap) {
+		/*
+		 * File file = new File(
+		 * "C:\\Users\\nanov\\Desktop\\prog-misc\\expense-tracker-api\\expense-tracker-api\\classpath.txt"
+		 * ); try (BufferedWriter writer = new BufferedWriter(new FileWriter(file));){
+		 * // file.createNewFile(); writer.write(System.getProperty("java.class.path"));
+		 * } catch (IOException e) { e.printStackTrace(); }
+		 */
+        
         String email = (String) userMap.get("email");
         String password = (String) userMap.get("password");
         User user = userService.validateUser(email, password);

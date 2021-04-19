@@ -4,9 +4,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @SuppressWarnings("serial")
-@ResponseStatus(HttpStatus.UNAUTHORIZED)
-public class EtAuthException extends RuntimeException{
-    public EtAuthException(String message) {
-        super(message);
-    }
+@ResponseStatus(HttpStatus.NOT_FOUND)
+public class EtResourceNotFoundException extends RuntimeException{
+
+	public EtResourceNotFoundException(String message) {
+		super(message);
+	}
+	
 }
