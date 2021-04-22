@@ -2,6 +2,7 @@ package com.pairlearning.expensetracker.resources;
 
 import com.pairlearning.expensetracker.domain.User;
 import com.pairlearning.expensetracker.services.UserService;
+import com.pairlearning.expensetracker.sessions.SessionTable;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +13,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
+
+import static com.pairlearning.expensetracker.sessions.SessionTable.nameOfSessionCookie;
 
 @RestController
 @RequestMapping("/api/users")
@@ -28,19 +30,12 @@ public class UserController {
     UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> loginUser(@RequestBody Map<String, Object> userMap) {
-		/*
-		 * File file = new File(
-		 * "C:\\Users\\nanov\\Desktop\\prog-misc\\expense-tracker-api\\expense-tracker-api\\classpath.txt"
-		 * ); try (BufferedWriter writer = new BufferedWriter(new FileWriter(file));){
-		 * // file.createNewFile(); writer.write(System.getProperty("java.class.path"));
-		 * } catch (IOException e) { e.printStackTrace(); }
-		 */
-        
+    public ResponseEntity<String> loginUser(@RequestBody Map<String, Object> userMap, HttpServletResponse response) {
         String email = (String) userMap.get("email");
         String password = (String) userMap.get("password");
         User user = userService.validateUser(email, password);
-        return new ResponseEntity<>(generateJWTToken(user),HttpStatus.OK);
+        response.addCookie(generateSessionId(user));
+        return new ResponseEntity<>(/*generateJWTToken(user),*/HttpStatus.OK);
     }
 
     @PostMapping("/register")
@@ -51,6 +46,13 @@ public class UserController {
         String password = (String) userMap.get("password");
         User user = userService.registerUser(firstName, lastName, email, password);
         return new ResponseEntity<>(generateJWTToken(user), HttpStatus.OK);
+    }
+
+    private Cookie generateSessionId(User user) {
+        Integer userId = user.getUserId();
+        String value = UUID.randomUUID().toString();
+        SessionTable.setSessionIdForUser(value, userId);
+        return new Cookie(nameOfSessionCookie, value);
     }
 
     private Map<String, String> generateJWTToken (User user) {
