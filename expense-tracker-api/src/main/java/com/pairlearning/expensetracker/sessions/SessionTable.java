@@ -16,7 +16,6 @@ public class SessionTable {
     }
 
     public static Integer fetchUserIdBySessionId(String sessionId) throws EtAuthException {
-
         Integer userId = lookUpTable.get(sessionId);
         if(userId != null) {
             return userId;

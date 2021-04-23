@@ -32,16 +32,13 @@ public class CategoryController {
 	
 	@GetMapping("/{"+CATEGORY_ID+"}")
 	public ResponseEntity<Category> fetchCategoryById(HttpServletRequest request, @PathVariable Integer categoryId) {
-		
 		Integer userId = (Integer)request.getAttribute(USER_ID);
 		Category category = categoryService.fetchCategoryById(userId, categoryId);
 		return new ResponseEntity<>(category, HttpStatus.OK);
-		
 	}
 	
 	@PostMapping("")
 	public ResponseEntity<Category> addCategory(HttpServletRequest request, @RequestBody Map<String, Object> categoryMap){
-		
 		int userId = (Integer) request.getAttribute(USER_ID);
 		String title = (String)categoryMap.get(TITLE);
 		String description = (String)categoryMap.get(DESCRIPTION);
@@ -52,7 +49,6 @@ public class CategoryController {
 	@PutMapping("/{"+CATEGORY_ID+"}")
 	public ResponseEntity<Map<String, Boolean>> updateCategory(HttpServletRequest request, @PathVariable(CATEGORY_ID) Integer categoryId,
 			@RequestBody Category category) throws EtBadRequestException, IOException{
-	
 		Integer userId = (Integer) request.getAttribute(USER_ID);
 		categoryService.updateCategory(userId, categoryId, category);
 		Map<String, Boolean> map = new HashMap<>();
@@ -62,12 +58,10 @@ public class CategoryController {
 	
 	@DeleteMapping("/{"+CATEGORY_ID+"}")
 	public ResponseEntity<Map<String, Boolean>> removeCategory(HttpServletRequest request, @PathVariable(CATEGORY_ID) Integer categoryId) throws EtBadRequestException {
-	
 		Integer userId = (Integer) request.getAttribute(USER_ID);
 		categoryService.removeCategoryWithAllTransactions(userId, categoryId);
 		Map<String, Boolean> map = new HashMap<>();
 		map.put(SUCCESS, true);
 		return new ResponseEntity<>(map, HttpStatus.OK);
 	}
-	
 }

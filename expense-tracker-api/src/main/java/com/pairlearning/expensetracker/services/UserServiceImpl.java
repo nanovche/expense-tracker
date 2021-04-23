@@ -38,13 +38,10 @@ public class UserServiceImpl implements UserService{
         if(count > 0) {
             throw new EtAuthException(EMAIL_IN_USE);
         }
-
         User user = new User.
                 UserBuilder(firstName, lastName, email, password).
                 build();
-
         Integer userId = userRepository.create(user);
         return userRepository.findById(userId);
     }
-
 }

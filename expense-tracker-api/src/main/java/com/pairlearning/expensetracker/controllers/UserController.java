@@ -70,5 +70,4 @@ public class UserController {
         map.put(TOKEN, token);
         return map;
     }
-
 }

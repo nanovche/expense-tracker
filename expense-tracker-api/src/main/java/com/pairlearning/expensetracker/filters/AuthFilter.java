@@ -25,7 +25,6 @@ public class AuthFilter extends GenericFilterBean {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-			
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
 		
@@ -42,7 +41,6 @@ public class AuthFilter extends GenericFilterBean {
 					httpResponse.sendError(HttpStatus.FORBIDDEN.value(), INVALID_OR_EXPIRED_TOKEN);
 					return;
 				}
-				
 			} else {
 				httpResponse.sendError(HttpStatus.FORBIDDEN.value(), AUTHORIZATION_TOKEN_MUST_BE_BEARER);
 				return;
@@ -51,9 +49,6 @@ public class AuthFilter extends GenericFilterBean {
 			httpResponse.sendError(HttpStatus.FORBIDDEN.value(), AUTHORIZATION_TOKEN_MUST_BE_PROVIDED);
 			return;
 		}
-		
 		chain.doFilter(request, response);
-		
 	}
-
 }

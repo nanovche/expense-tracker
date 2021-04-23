@@ -27,7 +27,6 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public Category addCategory(Integer userId, String title, String description) throws EtBadRequestException {
-
 		Category category = new Category.
 				CategoryBuilder(userId, title, description).
 				build();
@@ -47,5 +46,4 @@ public class CategoryServiceImpl implements CategoryService {
 		this.fetchCategoryById(userId, categoryId);
 		categoryRepository.removeById(userId, categoryId);	
 	}
-
 }

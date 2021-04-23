@@ -67,7 +67,6 @@ public class TransactionRepositoryImpl implements TransactionRepository {
 	@Override
 	public Integer create(Transaction transaction)
 			throws EtBadRequestException {
-		
 		try {
 			KeyHolder keyHolder = new GeneratedKeyHolder();
 			jdbcTemplate.update(connection -> {
@@ -83,13 +82,11 @@ public class TransactionRepositoryImpl implements TransactionRepository {
 		} catch(Exception e) {
 			throw new EtBadRequestException(INVALID_REQUEST);
 		}
-		
 	}
 
 	@Override
 	public void update(Integer userId, Integer categoryId, Integer transactionId, Transaction transaction)
 			throws EtBadRequestException {
-			
 		try {
 			jdbcTemplate.update(SQL_UPDATE, transaction.getAmount(), transaction.getNote(), transaction.getTransactionDate(),
 					userId, categoryId, transactionId);
@@ -106,5 +103,4 @@ public class TransactionRepositoryImpl implements TransactionRepository {
 			throw new EtResourceNotFoundException(TRANSACTION_NOT_FOUND);
 		}
 	}
-
 }

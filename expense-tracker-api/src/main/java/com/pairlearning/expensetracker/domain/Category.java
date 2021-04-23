@@ -35,7 +35,6 @@ public class Category {
 			return this;
 		}
 
-
 		public CategoryBuilder setTotalExpense(Double totalExpense) {
 			this.totalExpense = totalExpense;
 			return this;
@@ -65,5 +64,4 @@ public class Category {
 	public Double getTotalExpenses() {
 		return totalExpense;
 	}
-
 }

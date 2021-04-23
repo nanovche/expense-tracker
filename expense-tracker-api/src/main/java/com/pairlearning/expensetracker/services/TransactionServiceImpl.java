@@ -12,7 +12,6 @@ import java.util.List;
 @Service
 public class TransactionServiceImpl implements TransactionService{
 
-	
 	@Autowired
 	TransactionRepository transactionRepository;
 	
@@ -30,7 +29,6 @@ public class TransactionServiceImpl implements TransactionService{
 	@Override
 	public Transaction addTransaction(Integer userId, Integer categoryId, Double amount, String note,
 			Long transactionDate) throws EtBadRequestException {
-
 		Transaction transaction = new Transaction.
 				TransactionBuilder(userId, categoryId, amount, note, transactionDate)
 				.build();
@@ -49,5 +47,4 @@ public class TransactionServiceImpl implements TransactionService{
 			throws EtResourceNotFoundException {
 		transactionRepository.removeById(userId, categoryId, transactionId);
 	}
-
 }

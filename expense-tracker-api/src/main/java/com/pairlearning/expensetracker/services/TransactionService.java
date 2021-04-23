@@ -1,13 +1,12 @@
 package com.pairlearning.expensetracker.services;
 
-import java.util.List;
-
 import com.pairlearning.expensetracker.domain.Transaction;
 import com.pairlearning.expensetracker.exceptions.EtBadRequestException;
 import com.pairlearning.expensetracker.exceptions.EtResourceNotFoundException;
 
-public interface TransactionService {
+import java.util.List;
 
+public interface TransactionService {
 	List<Transaction> fetchAllTransactions(Integer userId, Integer categoryId);
 	
 	Transaction fetchTransactionById(Integer userId, Integer categoryId, Integer transactionId) throws EtResourceNotFoundException;
@@ -17,7 +16,4 @@ public interface TransactionService {
 	void updateTransaction(Integer userId, Integer categoryId, Integer transactionId, Transaction transaction) throws EtBadRequestException;
 	
 	void removeTransaction(Integer userId, Integer categoryId, Integer transactionId) throws EtResourceNotFoundException;
-	
-	
-	
 }

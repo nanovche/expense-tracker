@@ -27,8 +27,4 @@ public class Constants {
     public static final String INVALID_EMAIL_FORMAT = "invalid email format";
     public static final String EMAIL_IN_USE = "email already in use";
     public static final String NAME_OF_SESSION_COOKIE = "sessionId";
-
-
-
-
 }

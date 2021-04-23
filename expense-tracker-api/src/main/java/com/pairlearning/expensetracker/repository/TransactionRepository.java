@@ -7,7 +7,6 @@ import com.pairlearning.expensetracker.exceptions.EtResourceNotFoundException;
 import java.util.List;
 
 public interface TransactionRepository {
-
 	List<Transaction> fetchAll(Integer userId, Integer categoryId);
 	
 	Transaction fetchById(Integer userId, Integer categoryId, Integer transactionId) throws
@@ -20,5 +19,4 @@ public interface TransactionRepository {
 	EtBadRequestException;
 	
 	void removeById(Integer userId, Integer categoryId, Integer transactionId) throws EtResourceNotFoundException;
-	
 }

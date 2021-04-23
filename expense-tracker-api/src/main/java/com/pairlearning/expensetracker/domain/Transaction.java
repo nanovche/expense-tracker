@@ -8,6 +8,7 @@ public class Transaction {
 	private Double amount;
 	private String note;
 	private Long transactionDate;
+
 	private Transaction(TransactionBuilder transactionBuilder) {
 		this.transactionId = transactionBuilder.transactionId;
 		this.categoryId = transactionBuilder.categoryId;
@@ -43,23 +44,25 @@ public class Transaction {
 			return new Transaction(this);
 		}
 	}
-
 	public Integer getTransactionId() {
 		return transactionId;
 	}
+
 	public Integer getCategoryId() {
 		return categoryId;
 	}
+
 	public Integer getUserId() {
 		return userId;
 	}
+
 	public Double getAmount() {
 		return amount;
 	}
+
 	public String getNote() {
 		return note;
 	}public Long getTransactionDate() {
 		return transactionDate;
 	}
-
 }

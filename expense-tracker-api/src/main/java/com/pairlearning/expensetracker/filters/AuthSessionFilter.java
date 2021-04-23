@@ -20,7 +20,6 @@ public class AuthSessionFilter extends GenericFilterBean {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
@@ -30,7 +29,6 @@ public class AuthSessionFilter extends GenericFilterBean {
                 cookieValue = cookie.getValue();
             }
         }
-
         Integer userId = null;
         try {
             userId = SessionTable.fetchUserIdBySessionId(cookieValue);
