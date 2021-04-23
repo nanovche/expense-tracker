@@ -21,8 +21,6 @@ public class Constants {
     public static final String TOKEN = "token";
     public static final String TOTAL_EXPENSE = "total_expense";
 
-    public static final String CATEGORY_NOT_FOUND = "category not found";
-    public static final String TRANSACTION_NOT_FOUND = "transaction not found";
     public static final String INVALID_REQUEST = "invalid request";
     public static final String INVALID_EMAIL_OR_PASSWORD = "invalid email or password";
     public static final String INVALID_DETAILS = "invalid details. Failed to create account";

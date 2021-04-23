@@ -33,7 +33,9 @@ public class TransactionRepositoryImpl implements TransactionRepository {
 			+ "WHERE user_id = ? AND category_id = ? AND transaction_id = ?"; 
 	
 	
-	private static final String SQL_DELETE = "DELETE FROM et_transactions WHERE user_id = ? AND category_id = ? AND transaction_id = ?";	
+	private static final String SQL_DELETE = "DELETE FROM et_transactions WHERE user_id = ? AND category_id = ? AND transaction_id = ?";
+
+	private static final String TRANSACTION_NOT_FOUND = "transaction not found";
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;

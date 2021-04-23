@@ -35,7 +35,9 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 	private static final String SQL_DELETE_CATEGORY = "DELETE FROM et_categories WHERE user_id = ? AND category_id = ?";
 	
 	private static final String SQL_DELETE_ALL_TRANSACTIONS = "DELETE FROM et_transactions WHERE category_id = ?";
-	
+
+	private static final String CATEGORY_NOT_FOUND = "category not found";
+
 	private final RowMapper<Category> categoryRowMapper = ((rs, rowNum) -> new Category.CategoryBuilder(
 			rs.getInt(USER_ID),
 			rs.getString(TITLE),
