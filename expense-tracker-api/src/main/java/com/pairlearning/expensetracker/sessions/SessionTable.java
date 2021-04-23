@@ -15,7 +15,7 @@ public class SessionTable {
         lookUpTable.put(sessionId, userId);
     }
 
-    public static Integer retrieveUserIdBySessionId(String sessionId) throws EtAuthException {
+    public static Integer fetchUserIdBySessionId(String sessionId) throws EtAuthException {
 
         Integer userId = lookUpTable.get(sessionId);
         if(userId != null) {

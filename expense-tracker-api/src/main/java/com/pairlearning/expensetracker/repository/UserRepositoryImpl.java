@@ -56,7 +56,7 @@ public class UserRepositoryImpl implements UserRepository {
 	}
 
 	@Override
-	public User findByEmailAndPassword(String email, String password) throws EtAuthException {
+	public User fetchByEmailAndPassword(String email, String password) throws EtAuthException {
 		try {
 			User user = jdbcTemplate.queryForObject(SQL_FIND_BY_EMAIL, userRowMapper, email);
 			

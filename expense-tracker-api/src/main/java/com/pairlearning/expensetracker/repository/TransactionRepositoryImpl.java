@@ -46,12 +46,12 @@ public class TransactionRepositoryImpl implements TransactionRepository {
 			.build());
 	
 	@Override
-	public List<Transaction> findAll(Integer userId, Integer categoryId) {
+	public List<Transaction> fetchAll(Integer userId, Integer categoryId) {
 		return jdbcTemplate.query(SQL_FIND_ALL, transactionRowMapper, userId, categoryId);
 	}
 
 	@Override
-	public Transaction findById(Integer userId, Integer categoryId, Integer transactionId)
+	public Transaction fetchById(Integer userId, Integer categoryId, Integer transactionId)
 			throws EtResourceNotFoundException {
 		try {
 			return jdbcTemplate.queryForObject(SQL_FIND_BY_ID, transactionRowMapper, userId, categoryId, transactionId);

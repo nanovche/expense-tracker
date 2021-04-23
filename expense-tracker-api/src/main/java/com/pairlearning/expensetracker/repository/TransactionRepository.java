@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface TransactionRepository {
 
-	List<Transaction> findAll(Integer userId, Integer categoryId);
+	List<Transaction> fetchAll(Integer userId, Integer categoryId);
 	
-	Transaction findById(Integer userId, Integer categoryId, Integer transactionId) throws
+	Transaction fetchById(Integer userId, Integer categoryId, Integer transactionId) throws
 	EtResourceNotFoundException;
 	
 	Integer create(Transaction transaction) throws

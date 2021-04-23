@@ -9,9 +9,9 @@ import java.util.List;
 public interface CategoryRepository {
 
 	
-	List<Category> findAll(Integer userId) throws EtResourceNotFoundException;
+	List<Category> fetchAll(Integer userId) throws EtResourceNotFoundException;
 	
-	Category findById(Integer userId, Integer categoryId) throws EtResourceNotFoundException;
+	Category fetchById(Integer userId, Integer categoryId) throws EtResourceNotFoundException;
 	
 	Integer create(Category category) throws EtBadRequestException;
 

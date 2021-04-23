@@ -30,7 +30,7 @@ public class AuthSessionFilter extends GenericFilterBean {
 
         Integer userId = null;
         try {
-            userId = SessionTable.retrieveUserIdBySessionId(cookieValue);
+            userId = SessionTable.fetchUserIdBySessionId(cookieValue);
         } catch (EtAuthException e) {
             e.printStackTrace();
         }

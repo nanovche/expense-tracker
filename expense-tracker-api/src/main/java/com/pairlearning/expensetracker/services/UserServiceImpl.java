@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserService{
         if(email != null) {
             email = email.toLowerCase();
         }
-        return userRepository.findByEmailAndPassword(email, password);
+        return userRepository.fetchByEmailAndPassword(email, password);
     }
 
     @Override

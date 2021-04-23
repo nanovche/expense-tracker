@@ -7,7 +7,7 @@ public interface UserRepository {
 
     Integer create(User user) throws EtAuthException;
 
-    User findByEmailAndPassword(String email, String password) throws EtAuthException;
+    User fetchByEmailAndPassword(String email, String password) throws EtAuthException;
 
     Integer getCountByEmail(String email);
 

@@ -46,12 +46,12 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 	JdbcTemplate jdbcTemplate;
 	
 	@Override
-	public List<Category> findAll(Integer userId) throws EtResourceNotFoundException {
+	public List<Category> fetchAll(Integer userId) throws EtResourceNotFoundException {
 		return jdbcTemplate.query(SQL_FIND_ALL, categoryRowMapper, userId);
 	}
 
 	@Override
-	public Category findById(Integer userId, Integer categoryId) throws EtResourceNotFoundException {
+	public Category fetchById(Integer userId, Integer categoryId) throws EtResourceNotFoundException {
 
 		try {
 			Category category = jdbcTemplate.queryForObject(SQL_FIND_BY_ID, categoryRowMapper, new Object[] {userId, categoryId});

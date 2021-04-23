@@ -17,12 +17,12 @@ public class CategoryServiceImpl implements CategoryService {
 	
 	@Override
 	public List<Category> fetchAllCategories(Integer userId) {
-		return categoryRepository.findAll(userId);
+		return categoryRepository.fetchAll(userId);
 	}
 
 	@Override
 	public Category fetchCategoryById(Integer userId, Integer categoryId) throws EtResourceNotFoundException {
-		return categoryRepository.findById(userId, categoryId);
+		return categoryRepository.fetchById(userId, categoryId);
 	}
 
 	@Override
@@ -32,20 +32,20 @@ public class CategoryServiceImpl implements CategoryService {
 				CategoryBuilder(userId, title, description).
 				build();
 		int categoryId = categoryRepository.create(category);
-		return categoryRepository.findById(userId, categoryId);
-	}
-	
-	@Override
-	public void removeCategoryWithAllTransactions(Integer userId, Integer categoryId)
-			throws EtResourceNotFoundException {
-		this.fetchCategoryById(userId, categoryId);
-		categoryRepository.removeById(userId, categoryId);	
+		return categoryRepository.fetchById(userId, categoryId);
 	}
 
 	@Override
 	public void updateCategory(Integer userId, Integer categoryId, Category category)
 			throws EtBadRequestException {
-		categoryRepository.update(userId, categoryId, category);		
+		categoryRepository.update(userId, categoryId, category);
+	}
+
+	@Override
+	public void removeCategoryWithAllTransactions(Integer userId, Integer categoryId)
+			throws EtResourceNotFoundException {
+		this.fetchCategoryById(userId, categoryId);
+		categoryRepository.removeById(userId, categoryId);	
 	}
 
 }
