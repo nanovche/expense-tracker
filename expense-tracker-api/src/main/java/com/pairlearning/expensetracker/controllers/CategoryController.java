@@ -24,14 +24,14 @@ public class CategoryController {
 	CategoryService categoryService;
 	
 	@GetMapping("")
-	public ResponseEntity<List<Category>> getAllCategories(HttpServletRequest request) {
+	public ResponseEntity<List<Category>> fetchAllCategories(HttpServletRequest request) {
 		int userId = (Integer)request.getAttribute(USER_ID);
 		List<Category> categories = categoryService.fetchAllCategories(userId);
 		return new ResponseEntity<>(categories, HttpStatus.OK);
 	}
 	
 	@GetMapping("/{"+CATEGORY_ID+"}")
-	public ResponseEntity<Category> getCategoryById(HttpServletRequest request, @PathVariable Integer categoryId) {
+	public ResponseEntity<Category> fetchCategoryById(HttpServletRequest request, @PathVariable Integer categoryId) {
 		
 		Integer userId = (Integer)request.getAttribute(USER_ID);
 		Category category = categoryService.fetchCategoryById(userId, categoryId);
@@ -61,7 +61,7 @@ public class CategoryController {
 	}
 	
 	@DeleteMapping("/{"+CATEGORY_ID+"}")
-	public ResponseEntity<Map<String, Boolean>> deleteCategory(HttpServletRequest request, @PathVariable(CATEGORY_ID) Integer categoryId) throws EtBadRequestException {
+	public ResponseEntity<Map<String, Boolean>> removeCategory(HttpServletRequest request, @PathVariable(CATEGORY_ID) Integer categoryId) throws EtBadRequestException {
 	
 		Integer userId = (Integer) request.getAttribute(USER_ID);
 		categoryService.removeCategoryWithAllTransactions(userId, categoryId);

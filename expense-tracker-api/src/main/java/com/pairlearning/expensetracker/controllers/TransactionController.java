@@ -64,8 +64,8 @@ public class TransactionController {
 	}
 	
 	@DeleteMapping("/{"+TRANSACTION_ID+"}")
-	public ResponseEntity<Map<String, Boolean>> deleteTransaction(HttpServletRequest request,
-			@PathVariable(CATEGORY_ID) Integer categoryId, @PathVariable(TRANSACTION_ID) Integer transactionId) {
+	public ResponseEntity<Map<String, Boolean>> removeTransaction(HttpServletRequest request,
+																  @PathVariable(CATEGORY_ID) Integer categoryId, @PathVariable(TRANSACTION_ID) Integer transactionId) {
 		
 		Integer userId = (Integer) request.getAttribute(USER_ID);
 		transactionService.removeTransaction(userId, categoryId, transactionId);
