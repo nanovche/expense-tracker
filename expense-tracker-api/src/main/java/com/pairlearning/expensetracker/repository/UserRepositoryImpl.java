@@ -27,24 +27,26 @@ public class UserRepositoryImpl implements UserRepository {
 	@Autowired
 	JdbcTemplate jdbcTemplate;
 
-	private final RowMapper<User> userRowMapper = ((rs, rowNum) -> 
-			new User.UserBuilder(rs.getInt("user_id"),
-			         rs.getString("first_name"), 
-			         rs.getString("last_name"), 
-			         rs.getString("email"), 
-			         rs.getString("password")).build());
+	private final RowMapper<User> userRowMapper = ((rs, rowNum) ->
+			new User.UserBuilder(
+					rs.getString("first_name"),
+					rs.getString("last_name"),
+					rs.getString("email"),
+					rs.getString("password")).
+					setUserId(rs.getInt("user_id"))
+					.build());
 
 	@Override
-	public Integer create(String firstName, String lastName, String email, String password) throws EtAuthException {
+	public Integer create(User user) throws EtAuthException {
 //		String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt(10));
 		try {
 			KeyHolder keyHolder = new GeneratedKeyHolder();
 			jdbcTemplate.update(connection -> {
 				PreparedStatement ps = connection.prepareStatement(SQL_CREATE, Statement.RETURN_GENERATED_KEYS);
-				ps.setString(1, firstName);
-				ps.setString(2, lastName);
-				ps.setString(3, email);
-				ps.setString(4, password  /*hashedPassword*/);
+				ps.setString(1, user.getFirstName());
+				ps.setString(2, user.getLastName());
+				ps.setString(3, user.getEmail());
+				ps.setString(4, user.getPassword() /*hashedPassword*/);
 				return ps;
 			}, keyHolder);
 			return (Integer) keyHolder.getKeys().get("USER_ID");

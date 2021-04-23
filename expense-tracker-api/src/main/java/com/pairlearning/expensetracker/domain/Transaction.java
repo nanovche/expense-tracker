@@ -9,7 +9,6 @@ public class Transaction {
 	private String note;
 	private Long transactionDate;
 	private Transaction(TransactionBuilder transactionBuilder) {
-		super();
 		this.transactionId = transactionBuilder.transactionId;
 		this.categoryId = transactionBuilder.categoryId;
 		this.userId = transactionBuilder.userId;
@@ -27,14 +26,19 @@ public class Transaction {
 		private String note;
 		private Long transactionDate;
 
-		public TransactionBuilder(Integer transactionId, Integer categoryId, Integer userId, Double amount, String note, Long transactionDate) {
-			this.transactionId = transactionId;
+		public TransactionBuilder(Integer userId, Integer categoryId, Double amount, String note, Long transactionDate) {
 			this.categoryId = categoryId;
 			this.userId = userId;
 			this.amount = amount;
 			this.note = note;
 			this.transactionDate = transactionDate;
 		}
+
+		public TransactionBuilder setTransactionId(Integer transactionId) {
+			this.transactionId = transactionId;
+			return this;
+		}
+
 		public Transaction build(){
 			return new Transaction(this);
 		}

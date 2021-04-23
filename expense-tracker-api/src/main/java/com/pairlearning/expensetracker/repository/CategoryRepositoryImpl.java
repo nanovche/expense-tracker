@@ -34,13 +34,13 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 	
 	private static final String SQL_DELETE_ALL_TRANSACTIONS = "DELETE FROM et_transactions WHERE category_id = ?";
 	
-	private RowMapper<Category> categoryRowMapper = ((rs, rowNum) -> {
-		return new Category.CategoryBuilder(rs.getInt("category_id"),
-				rs.getInt("user_id"),
-				rs.getString("title"),
-				rs.getString("description"),
-				rs.getDouble("total_expense")).build();
-	});
+	private RowMapper<Category> categoryRowMapper = ((rs, rowNum) -> new Category.CategoryBuilder(
+			rs.getInt("user_id"),
+			rs.getString("title"),
+			rs.getString("description"))
+			.setCategoryId(rs.getInt("category_id"))
+			.setTotalExpense(rs.getDouble("total_expense"))
+			.build());
 	
 	@Autowired
 	JdbcTemplate jdbcTemplate;
@@ -63,15 +63,15 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 	}
 
 	@Override
-	public Integer create(Integer userId, String title, String description) throws EtBadRequestException {
+	public Integer create(Category category) throws EtBadRequestException {
 			
 		try {
 			KeyHolder keyHolder = new GeneratedKeyHolder();
 			jdbcTemplate.update(connection -> {
 				PreparedStatement ps = connection.prepareStatement(SQL_CREATE, Statement.RETURN_GENERATED_KEYS);
-				ps.setInt(1, userId);
-				ps.setString(2, title);
-				ps.setString(3, description);
+				ps.setInt(1, category.getUserId());
+				ps.setString(2, category.getTitle());
+				ps.setString(3, category.getDescription());
 				return ps;
 			}, keyHolder);
 			

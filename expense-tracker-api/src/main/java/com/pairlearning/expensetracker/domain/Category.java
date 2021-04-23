@@ -24,12 +24,21 @@ public class Category {
 		private String description;
 		private Double totalExpense;
 
-		public CategoryBuilder(Integer categoryId, Integer userId, String title, String description, Double totalExpense) {
-			this.categoryId = categoryId;
+		public CategoryBuilder(Integer userId, String title, String description) {
 			this.userId = userId;
 			this.title = title;
 			this.description = description;
+		}
+
+		public CategoryBuilder setCategoryId(Integer categoryId) {
+			this.categoryId = categoryId;
+			return this;
+		}
+
+
+		public CategoryBuilder setTotalExpense(Double totalExpense) {
 			this.totalExpense = totalExpense;
+			return this;
 		}
 
 		public Category build() {

@@ -1,14 +1,13 @@
 package com.pairlearning.expensetracker.services;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.pairlearning.expensetracker.domain.Transaction;
 import com.pairlearning.expensetracker.exceptions.EtBadRequestException;
 import com.pairlearning.expensetracker.exceptions.EtResourceNotFoundException;
 import com.pairlearning.expensetracker.repository.TransactionRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class TransactionServiceImpl implements TransactionService{
@@ -31,11 +30,13 @@ public class TransactionServiceImpl implements TransactionService{
 	@Override
 	public Transaction addTransaction(Integer userId, Integer categoryId, Double amount, String note,
 			Long transactionDate) throws EtBadRequestException {
-	
-		Integer transactionId = transactionRepository.create(userId, categoryId, amount, note, transactionDate);
+
+		Transaction transaction = new Transaction.
+				TransactionBuilder(userId, categoryId, amount, note, transactionDate)
+				.build();
+		Integer transactionId = transactionRepository.create(transaction);
 		return transactionRepository.findById(userId, categoryId, transactionId);
 	}
-	
 
 	@Override
 	public void updateTransaction(Integer userId, Integer categoryId, Integer transactionId, Transaction transaction)

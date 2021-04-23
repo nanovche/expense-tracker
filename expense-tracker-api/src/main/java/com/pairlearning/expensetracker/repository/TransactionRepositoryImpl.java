@@ -36,14 +36,14 @@ public class TransactionRepositoryImpl implements TransactionRepository {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
-	private RowMapper<Transaction> transactionRowMapper = ((rs, rowNum) -> {
-		return new Transaction.TransactionBuilder(rs.getInt("transaction_id"),
-				rs.getInt("category_id"),
-				rs.getInt("user_id"),
-				rs.getDouble("amount"),
-				rs.getString("note"),
-				rs.getLong("transaction_date")).build();
-	});
+	private RowMapper<Transaction> transactionRowMapper = ((rs, rowNum) -> new Transaction.TransactionBuilder(
+			rs.getInt("category_id"),
+			rs.getInt("user_id"),
+			rs.getDouble("amount"),
+			rs.getString("note"),
+			rs.getLong("transaction_date"))
+			.setTransactionId(rs.getInt("transaction_id"))
+			.build());
 	
 	@Override
 	public List<Transaction> findAll(Integer userId, Integer categoryId) {
@@ -61,18 +61,18 @@ public class TransactionRepositoryImpl implements TransactionRepository {
 	}
 
 	@Override
-	public Integer create(Integer userId, Integer categoryId, Double amount, String note, Long transactionDate)
+	public Integer create(Transaction transaction)
 			throws EtBadRequestException {
 		
 		try {
 			KeyHolder keyHolder = new GeneratedKeyHolder();
 			jdbcTemplate.update(connection -> {
 				PreparedStatement ps = connection.prepareStatement(SQL_CREATE, Statement.RETURN_GENERATED_KEYS);
-				ps.setInt(1, categoryId);
-				ps.setInt(2, userId);
-				ps.setDouble(3, amount);
-				ps.setString(4, note);
-				ps.setLong(5, transactionDate);
+				ps.setInt(1, transaction.getCategoryId());
+				ps.setInt(2, transaction.getUserId());
+				ps.setDouble(3, transaction.getAmount());
+				ps.setString(4, transaction.getNote());
+				ps.setLong(5, transaction.getTransactionDate());
 				return ps;
 			}, keyHolder);
 			return (Integer) keyHolder.getKey().intValue();			

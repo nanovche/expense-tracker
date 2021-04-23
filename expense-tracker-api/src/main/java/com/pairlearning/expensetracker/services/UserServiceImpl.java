@@ -35,7 +35,12 @@ public class UserServiceImpl implements UserService{
         if(count > 0) {
             throw new EtAuthException("Email already in use");
         }
-        Integer userId = userRepository.create(firstName, lastName, email, password);
+
+        User user = new User.
+                UserBuilder(firstName, lastName, email, password).
+                build();
+
+        Integer userId = userRepository.create(user);
         return userRepository.findById(userId);
     }
 

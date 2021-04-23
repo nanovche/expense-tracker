@@ -5,7 +5,7 @@ import com.pairlearning.expensetracker.exceptions.EtAuthException;
 
 public interface UserRepository {
 
-    Integer create(String firstName, String lastName, String email, String password) throws EtAuthException;
+    Integer create(User user) throws EtAuthException;
 
     User findByEmailAndPassword(String email, String password) throws EtAuthException;
 

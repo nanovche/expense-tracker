@@ -1,19 +1,17 @@
 package com.pairlearning.expensetracker.services;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.pairlearning.expensetracker.domain.Category;
 import com.pairlearning.expensetracker.exceptions.EtBadRequestException;
 import com.pairlearning.expensetracker.exceptions.EtResourceNotFoundException;
 import com.pairlearning.expensetracker.repository.CategoryRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
-	
 	@Autowired
 	CategoryRepository categoryRepository;
 	
@@ -29,10 +27,13 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public Category addCategory(Integer userId, String title, String description) throws EtBadRequestException {
-		int categoryId = categoryRepository.create(userId, title, description);
+
+		Category category = new Category.
+				CategoryBuilder(userId, title, description).
+				build();
+		int categoryId = categoryRepository.create(category);
 		return categoryRepository.findById(userId, categoryId);
 	}
-
 	
 	@Override
 	public void removeCategoryWithAllTransactions(Integer userId, Integer categoryId)
