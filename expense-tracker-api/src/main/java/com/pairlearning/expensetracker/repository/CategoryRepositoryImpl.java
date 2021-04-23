@@ -14,6 +14,8 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
 
+import static com.pairlearning.expensetracker.Constants.*;
+
 @Repository
 public class CategoryRepositoryImpl implements CategoryRepository {
 
@@ -34,12 +36,12 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 	
 	private static final String SQL_DELETE_ALL_TRANSACTIONS = "DELETE FROM et_transactions WHERE category_id = ?";
 	
-	private RowMapper<Category> categoryRowMapper = ((rs, rowNum) -> new Category.CategoryBuilder(
-			rs.getInt("user_id"),
-			rs.getString("title"),
-			rs.getString("description"))
-			.setCategoryId(rs.getInt("category_id"))
-			.setTotalExpense(rs.getDouble("total_expense"))
+	private final RowMapper<Category> categoryRowMapper = ((rs, rowNum) -> new Category.CategoryBuilder(
+			rs.getInt(USER_ID),
+			rs.getString(TITLE),
+			rs.getString(DESCRIPTION))
+			.setCategoryId(rs.getInt(CATEGORY_ID))
+			.setTotalExpense(rs.getDouble(TOTAL_EXPENSE))
 			.build());
 	
 	@Autowired
@@ -54,10 +56,9 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 	public Category fetchById(Integer userId, Integer categoryId) throws EtResourceNotFoundException {
 
 		try {
-			Category category = jdbcTemplate.queryForObject(SQL_FIND_BY_ID, categoryRowMapper, new Object[] {userId, categoryId});
-			return category;
+			return jdbcTemplate.queryForObject(SQL_FIND_BY_ID, categoryRowMapper, userId, categoryId);
 		}catch(Exception e) {
-			throw new EtResourceNotFoundException("Category not found");
+			throw new EtResourceNotFoundException(CATEGORY_NOT_FOUND);
 		}
 		
 	}
@@ -75,11 +76,10 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 				return ps;
 			}, keyHolder);
 			
-			Integer category_id = (Integer) keyHolder.getKey().intValue();
-			return category_id;
-			
+			return (Integer) keyHolder.getKey();
+
 		} catch(Exception e) {
-			throw new EtBadRequestException("Invalid request");
+			throw new EtBadRequestException(INVALID_REQUEST);
 		}
 		
 	}
@@ -90,7 +90,7 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 		try {
 			jdbcTemplate.update(SQL_UPDATE, category.getTitle(), category.getDescription(), categoryId, userId);
 		}catch(Exception e) {
-			throw new EtBadRequestException("Invalid request"); 
+			throw new EtBadRequestException(INVALID_REQUEST);
 		}
 	}
 

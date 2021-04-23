@@ -14,6 +14,8 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
 
+import static com.pairlearning.expensetracker.Constants.*;
+
 @Repository
 public class TransactionRepositoryImpl implements TransactionRepository {
 
@@ -36,13 +38,13 @@ public class TransactionRepositoryImpl implements TransactionRepository {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
-	private RowMapper<Transaction> transactionRowMapper = ((rs, rowNum) -> new Transaction.TransactionBuilder(
-			rs.getInt("category_id"),
-			rs.getInt("user_id"),
-			rs.getDouble("amount"),
-			rs.getString("note"),
-			rs.getLong("transaction_date"))
-			.setTransactionId(rs.getInt("transaction_id"))
+	private final RowMapper<Transaction> transactionRowMapper = ((rs, rowNum) -> new Transaction.TransactionBuilder(
+			rs.getInt(CATEGORY_ID),
+			rs.getInt(USER_ID),
+			rs.getDouble(AMOUNT),
+			rs.getString(NOTE),
+			rs.getLong(TRANSACTION_DATE))
+			.setTransactionId(rs.getInt(TRANSACTION_ID))
 			.build());
 	
 	@Override
@@ -56,7 +58,7 @@ public class TransactionRepositoryImpl implements TransactionRepository {
 		try {
 			return jdbcTemplate.queryForObject(SQL_FIND_BY_ID, transactionRowMapper, userId, categoryId, transactionId);
 		}catch(Exception e) {
-			throw new EtResourceNotFoundException("Transaction not found");
+			throw new EtResourceNotFoundException(TRANSACTION_NOT_FOUND);
 		}
 	}
 
@@ -75,9 +77,9 @@ public class TransactionRepositoryImpl implements TransactionRepository {
 				ps.setLong(5, transaction.getTransactionDate());
 				return ps;
 			}, keyHolder);
-			return (Integer) keyHolder.getKey().intValue();			
+			return (Integer) keyHolder.getKey();
 		} catch(Exception e) {
-			throw new EtBadRequestException("Invalid request");
+			throw new EtBadRequestException(INVALID_REQUEST);
 		}
 		
 	}
@@ -90,7 +92,7 @@ public class TransactionRepositoryImpl implements TransactionRepository {
 			jdbcTemplate.update(SQL_UPDATE, transaction.getAmount(), transaction.getNote(), transaction.getTransactionDate(),
 					userId, categoryId, transactionId);
 		}catch(Exception e) {
-			throw new EtBadRequestException("Invalid request");
+			throw new EtBadRequestException(INVALID_REQUEST);
 		}
 	}
 
@@ -99,7 +101,7 @@ public class TransactionRepositoryImpl implements TransactionRepository {
 			throws EtResourceNotFoundException {
 		int count = jdbcTemplate.update(SQL_DELETE, userId, categoryId, transactionId);
 		if(count == 0) {
-			throw new EtResourceNotFoundException("Transaction not found");
+			throw new EtResourceNotFoundException(TRANSACTION_NOT_FOUND);
 		}
 	}
 

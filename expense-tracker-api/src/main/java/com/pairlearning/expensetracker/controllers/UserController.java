@@ -1,5 +1,6 @@
-package com.pairlearning.expensetracker.resources;
+package com.pairlearning.expensetracker.controllers;
 
+import com.pairlearning.expensetracker.Constants;
 import com.pairlearning.expensetracker.domain.User;
 import com.pairlearning.expensetracker.services.UserService;
 import com.pairlearning.expensetracker.sessions.SessionTable;
@@ -20,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import static com.pairlearning.expensetracker.sessions.SessionTable.nameOfSessionCookie;
+import static com.pairlearning.expensetracker.Constants.*;
 
 @RestController
 @RequestMapping("/api/users")
@@ -31,8 +32,8 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<String> loginUser(@RequestBody Map<String, Object> userMap, HttpServletResponse response) {
-        String email = (String) userMap.get("email");
-        String password = (String) userMap.get("password");
+        String email = (String) userMap.get(EMAIL);
+        String password = (String) userMap.get(PASSWORD);
         User user = userService.validateUser(email, password);
         response.addCookie(generateSessionId(user));
         return new ResponseEntity<>(/*generateJWTToken(user),*/HttpStatus.OK);
@@ -40,10 +41,10 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> registerUser(@RequestBody Map<String, Object> userMap){
-        String firstName = (String) userMap.get("firstName");
-        String lastName = (String) userMap.get("lastName");
-        String email = (String) userMap.get("email");
-        String password = (String) userMap.get("password");
+        String firstName = (String) userMap.get(FIRST_NAME);
+        String lastName = (String) userMap.get(LAST_NAME);
+        String email = (String) userMap.get(EMAIL);
+        String password = (String) userMap.get(PASSWORD);
         User user = userService.registerUser(firstName, lastName, email, password);
         return new ResponseEntity<>(generateJWTToken(user), HttpStatus.OK);
     }
@@ -52,7 +53,7 @@ public class UserController {
         Integer userId = user.getUserId();
         String value = UUID.randomUUID().toString();
         SessionTable.setSessionIdForUser(value, userId);
-        return new Cookie(nameOfSessionCookie, value);
+        return new Cookie(NAME_OF_SESSION_COOKIE, value);
     }
 
     private Map<String, String> generateJWTToken (User user) {
@@ -60,13 +61,13 @@ public class UserController {
         String token = Jwts.builder().signWith(SignatureAlgorithm.HS256, Constants.API_SECRET_KEY)
                 .setIssuedAt(new Date(timestamp))
                 .setExpiration(new Date(timestamp + Constants.TOKEN_VALIDITY))
-                .claim("userId", user.getUserId())
-                .claim("email", user.getEmail())
-                .claim("firstName", user.getFirstName())
-                .claim("lastName", user.getLastName())
+                .claim(USER_ID, user.getUserId())
+                .claim(EMAIL, user.getEmail())
+                .claim(FIRST_NAME, user.getFirstName())
+                .claim(LAST_NAME, user.getLastName())
                 .compact();
         Map<String, String> map = new HashMap<>();
-        map.put("token", token);
+        map.put(TOKEN, token);
         return map;
     }
 

@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class SessionTable {
 
-    public static final String nameOfSessionCookie = "sessionId";
+    private static final String USER_NOT_VERIFIED = "user not verified";
 
     private static final Map<String, Integer> lookUpTable = new HashMap<>();
 
@@ -21,6 +21,6 @@ public class SessionTable {
         if(userId != null) {
             return userId;
         }
-        throw new EtAuthException("user not verified");
+        throw new EtAuthException(USER_NOT_VERIFIED);
     }
 }

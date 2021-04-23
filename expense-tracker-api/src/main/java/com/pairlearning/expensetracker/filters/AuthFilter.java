@@ -1,6 +1,6 @@
 package com.pairlearning.expensetracker.filters;
 
-import com.pairlearning.expensetracker.resources.Constants;
+import com.pairlearning.expensetracker.Constants;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.http.HttpStatus;
@@ -14,7 +14,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.pairlearning.expensetracker.Constants.USER_ID;
+
 public class AuthFilter extends GenericFilterBean {
+
+	private static final String INVALID_OR_EXPIRED_TOKEN = "invalid/expired token";
+	private static final String AUTHORIZATION_TOKEN_MUST_BE_PROVIDED = "authorization token must be provided";
+	private static final String AUTHORIZATION_TOKEN_MUST_BE_BEARER = "authorization must be bearer [token]";
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -31,18 +37,18 @@ public class AuthFilter extends GenericFilterBean {
 				try {
 						Claims claims = Jwts.parser().setSigningKey(Constants.API_SECRET_KEY)
 								.parseClaimsJws(token).getBody();
-						httpRequest.setAttribute("userId", Integer.parseInt(claims.get("userId").toString()));
+						httpRequest.setAttribute(USER_ID, Integer.parseInt(claims.get(USER_ID).toString()));
 				} catch(Exception e) {
-					httpResponse.sendError(HttpStatus.FORBIDDEN.value(), "invalid/expired token");
+					httpResponse.sendError(HttpStatus.FORBIDDEN.value(), INVALID_OR_EXPIRED_TOKEN);
 					return;
 				}
 				
 			} else {
-				httpResponse.sendError(HttpStatus.FORBIDDEN.value(), "authorization must be bearer [token]");
+				httpResponse.sendError(HttpStatus.FORBIDDEN.value(), AUTHORIZATION_TOKEN_MUST_BE_BEARER);
 				return;
 			}
 		} else {
-			httpResponse.sendError(HttpStatus.FORBIDDEN.value(), "authorization token must be provided");
+			httpResponse.sendError(HttpStatus.FORBIDDEN.value(), AUTHORIZATION_TOKEN_MUST_BE_PROVIDED);
 			return;
 		}
 		

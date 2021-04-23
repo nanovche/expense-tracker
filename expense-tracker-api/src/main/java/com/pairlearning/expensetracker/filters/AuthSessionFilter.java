@@ -13,6 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.pairlearning.expensetracker.Constants.NAME_OF_SESSION_COOKIE;
+import static com.pairlearning.expensetracker.Constants.USER_ID;
+
 public class AuthSessionFilter extends GenericFilterBean {
 
     @Override
@@ -23,7 +26,7 @@ public class AuthSessionFilter extends GenericFilterBean {
 
         String cookieValue = null;
         for (Cookie cookie: httpRequest.getCookies()) {
-            if(cookie.getName().equals("sessionId")) {
+            if(cookie.getName().equals(NAME_OF_SESSION_COOKIE)) {
                 cookieValue = cookie.getValue();
             }
         }
@@ -34,7 +37,7 @@ public class AuthSessionFilter extends GenericFilterBean {
         } catch (EtAuthException e) {
             e.printStackTrace();
         }
-        httpRequest.setAttribute("userId", userId);
+        httpRequest.setAttribute(USER_ID, userId);
         chain.doFilter(request, response);
     }
 }

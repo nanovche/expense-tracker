@@ -1,4 +1,4 @@
-package com.pairlearning.expensetracker.resources;
+package com.pairlearning.expensetracker.controllers;
 
 import com.pairlearning.expensetracker.domain.Category;
 import com.pairlearning.expensetracker.exceptions.EtBadRequestException;
@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.pairlearning.expensetracker.Constants.*;
+
 @RestController
 @RequestMapping("/api/categories")
 public class CategoryController {
@@ -23,15 +25,15 @@ public class CategoryController {
 	
 	@GetMapping("")
 	public ResponseEntity<List<Category>> getAllCategories(HttpServletRequest request) {
-		int userId = (Integer)request.getAttribute("userId");
+		int userId = (Integer)request.getAttribute(USER_ID);
 		List<Category> categories = categoryService.fetchAllCategories(userId);
 		return new ResponseEntity<>(categories, HttpStatus.OK);
 	}
 	
-	@GetMapping("/{categoryId}")
+	@GetMapping("/{"+CATEGORY_ID+"}")
 	public ResponseEntity<Category> getCategoryById(HttpServletRequest request, @PathVariable Integer categoryId) {
 		
-		Integer userId = (Integer)request.getAttribute("userId");
+		Integer userId = (Integer)request.getAttribute(USER_ID);
 		Category category = categoryService.fetchCategoryById(userId, categoryId);
 		return new ResponseEntity<>(category, HttpStatus.OK);
 		
@@ -40,31 +42,31 @@ public class CategoryController {
 	@PostMapping("")
 	public ResponseEntity<Category> addCategory(HttpServletRequest request, @RequestBody Map<String, Object> categoryMap){
 		
-		int userId = (Integer) request.getAttribute("userId");
-		String title = (String)categoryMap.get("title");
-		String description = (String)categoryMap.get("description");
+		int userId = (Integer) request.getAttribute(USER_ID);
+		String title = (String)categoryMap.get(TITLE);
+		String description = (String)categoryMap.get(DESCRIPTION);
 		Category category = categoryService.addCategory(userId, title, description);
 		return new ResponseEntity<>(category, HttpStatus.CREATED);
 	}
 	
-	@PutMapping("/{categoryId}")
-	public ResponseEntity<Map<String, Boolean>> updateCategory(HttpServletRequest request, @PathVariable("categoryId") Integer categoryId,
+	@PutMapping("/{"+CATEGORY_ID+"}")
+	public ResponseEntity<Map<String, Boolean>> updateCategory(HttpServletRequest request, @PathVariable(CATEGORY_ID) Integer categoryId,
 			@RequestBody Category category) throws EtBadRequestException, IOException{
 	
-		Integer userId = (Integer) request.getAttribute("userId");
+		Integer userId = (Integer) request.getAttribute(USER_ID);
 		categoryService.updateCategory(userId, categoryId, category);
 		Map<String, Boolean> map = new HashMap<>();
-		map.put("success", true);
+		map.put(SUCCESS, true);
 		return new ResponseEntity<>(map, HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/{categoryId}")
-	public ResponseEntity<Map<String, Boolean>> deleteCategory(HttpServletRequest request, @PathVariable("categoryId") Integer categoryId) throws EtBadRequestException {
+	@DeleteMapping("/{"+CATEGORY_ID+"}")
+	public ResponseEntity<Map<String, Boolean>> deleteCategory(HttpServletRequest request, @PathVariable(CATEGORY_ID) Integer categoryId) throws EtBadRequestException {
 	
-		Integer userId = (Integer) request.getAttribute("userId");
+		Integer userId = (Integer) request.getAttribute(USER_ID);
 		categoryService.removeCategoryWithAllTransactions(userId, categoryId);
 		Map<String, Boolean> map = new HashMap<>();
-		map.put("success", true);
+		map.put(SUCCESS, true);
 		return new ResponseEntity<>(map, HttpStatus.OK);
 	}
 	

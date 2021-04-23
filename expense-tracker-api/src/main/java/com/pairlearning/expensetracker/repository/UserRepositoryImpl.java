@@ -13,6 +13,8 @@ import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 
+import static com.pairlearning.expensetracker.Constants.*;
+
 @Repository
 public class UserRepositoryImpl implements UserRepository {
 
@@ -29,11 +31,11 @@ public class UserRepositoryImpl implements UserRepository {
 
 	private final RowMapper<User> userRowMapper = ((rs, rowNum) ->
 			new User.UserBuilder(
-					rs.getString("first_name"),
-					rs.getString("last_name"),
-					rs.getString("email"),
-					rs.getString("password")).
-					setUserId(rs.getInt("user_id"))
+					rs.getString(FIRST_NAME),
+					rs.getString(LAST_NAME),
+					rs.getString(EMAIL),
+					rs.getString(PASSWORD)).
+					setUserId(rs.getInt(USER_ID))
 					.build());
 
 	@Override
@@ -51,7 +53,7 @@ public class UserRepositoryImpl implements UserRepository {
 			}, keyHolder);
 			return (Integer) keyHolder.getKeys().get("USER_ID");
 		} catch (Exception e) {
-			throw new EtAuthException("Invalid details. Failed to create account");
+			throw new EtAuthException(INVALID_DETAILS);
 		}
 	}
 
@@ -61,7 +63,7 @@ public class UserRepositoryImpl implements UserRepository {
 			User user = jdbcTemplate.queryForObject(SQL_FIND_BY_EMAIL, userRowMapper, email);
 			
 			 if (!password.equals(user.getPassword())) { throw new
-			  EtAuthException("Invalid email/password"); 
+			  EtAuthException(INVALID_EMAIL_OR_PASSWORD);
 			  }
 			 
 				/*
@@ -70,7 +72,7 @@ public class UserRepositoryImpl implements UserRepository {
 				 */
 			 return user;
 		} catch (EmptyResultDataAccessException e) {
-			throw new EtAuthException("Invalid email/password");
+			throw new EtAuthException(INVALID_EMAIL_OR_PASSWORD);
 		}
 	}
 

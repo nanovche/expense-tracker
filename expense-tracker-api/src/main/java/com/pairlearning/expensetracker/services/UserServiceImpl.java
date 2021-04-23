@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.regex.Pattern;
 
+import static com.pairlearning.expensetracker.Constants.EMAIL_IN_USE;
+import static com.pairlearning.expensetracker.Constants.INVALID_EMAIL_FORMAT;
+
 @Service
 public class UserServiceImpl implements UserService{
 
@@ -29,11 +32,11 @@ public class UserServiceImpl implements UserService{
             email = email.toLowerCase();
         }
         if(!pattern.matcher(email).matches()){
-            throw new EtAuthException("Invalid email format");
+            throw new EtAuthException(INVALID_EMAIL_FORMAT);
         }
         Integer count = userRepository.getCountByEmail(email);
         if(count > 0) {
-            throw new EtAuthException("Email already in use");
+            throw new EtAuthException(EMAIL_IN_USE);
         }
 
         User user = new User.
