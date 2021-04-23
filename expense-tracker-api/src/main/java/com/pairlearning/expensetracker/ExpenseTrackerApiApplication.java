@@ -13,7 +13,7 @@ public class ExpenseTrackerApiApplication {
 		SpringApplication.run(ExpenseTrackerApiApplication.class, args);
 		
 	}
-	
+
 /*	@Bean
 	public FilterRegistrationBean<AuthFilter> filterRegistrationBean(){
 		FilterRegistrationBean<AuthFilter> registrationBean = new FilterRegistrationBean<AuthFilter>();

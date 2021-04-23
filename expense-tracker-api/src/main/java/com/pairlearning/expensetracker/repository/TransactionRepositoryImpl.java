@@ -1,9 +1,8 @@
 package com.pairlearning.expensetracker.repository;
 
-import java.sql.PreparedStatement;
-import java.sql.Statement;
-import java.util.List;
-
+import com.pairlearning.expensetracker.domain.Transaction;
+import com.pairlearning.expensetracker.exceptions.EtBadRequestException;
+import com.pairlearning.expensetracker.exceptions.EtResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -11,9 +10,9 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import com.pairlearning.expensetracker.domain.Transaction;
-import com.pairlearning.expensetracker.exceptions.EtBadRequestException;
-import com.pairlearning.expensetracker.exceptions.EtResourceNotFoundException;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
+import java.util.List;
 
 @Repository
 public class TransactionRepositoryImpl implements TransactionRepository {
@@ -38,12 +37,12 @@ public class TransactionRepositoryImpl implements TransactionRepository {
 	private JdbcTemplate jdbcTemplate;
 	
 	private RowMapper<Transaction> transactionRowMapper = ((rs, rowNum) -> {
-		return new Transaction(rs.getInt("transaction_id"),
+		return new Transaction.TransactionBuilder(rs.getInt("transaction_id"),
 				rs.getInt("category_id"),
 				rs.getInt("user_id"),
 				rs.getDouble("amount"),
 				rs.getString("note"),
-				rs.getLong("transaction_date"));
+				rs.getLong("transaction_date")).build();
 	});
 	
 	@Override

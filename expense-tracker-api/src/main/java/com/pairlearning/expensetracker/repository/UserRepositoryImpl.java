@@ -2,7 +2,6 @@ package com.pairlearning.expensetracker.repository;
 
 import com.pairlearning.expensetracker.domain.User;
 import com.pairlearning.expensetracker.exceptions.EtAuthException;
-import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -29,11 +28,11 @@ public class UserRepositoryImpl implements UserRepository {
 	JdbcTemplate jdbcTemplate;
 
 	private final RowMapper<User> userRowMapper = ((rs, rowNum) -> 
-			new User(rs.getInt("user_id"),
+			new User.UserBuilder(rs.getInt("user_id"),
 			         rs.getString("first_name"), 
 			         rs.getString("last_name"), 
 			         rs.getString("email"), 
-			         rs.getString("password")));
+			         rs.getString("password")).build());
 
 	@Override
 	public Integer create(String firstName, String lastName, String email, String password) throws EtAuthException {

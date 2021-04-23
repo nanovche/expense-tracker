@@ -1,20 +1,18 @@
 package com.pairlearning.expensetracker.repository;
 
-import java.sql.PreparedStatement;
-import java.sql.Statement;
-import java.util.List;
-
+import com.pairlearning.expensetracker.domain.Category;
+import com.pairlearning.expensetracker.exceptions.EtBadRequestException;
+import com.pairlearning.expensetracker.exceptions.EtResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.integration.IntegrationProperties.Jdbc;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import com.pairlearning.expensetracker.domain.Category;
-import com.pairlearning.expensetracker.exceptions.EtBadRequestException;
-import com.pairlearning.expensetracker.exceptions.EtResourceNotFoundException;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
+import java.util.List;
 
 @Repository
 public class CategoryRepositoryImpl implements CategoryRepository {
@@ -37,11 +35,11 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 	private static final String SQL_DELETE_ALL_TRANSACTIONS = "DELETE FROM et_transactions WHERE category_id = ?";
 	
 	private RowMapper<Category> categoryRowMapper = ((rs, rowNum) -> {
-		return new Category(rs.getInt("category_id"),
+		return new Category.CategoryBuilder(rs.getInt("category_id"),
 				rs.getInt("user_id"),
 				rs.getString("title"),
 				rs.getString("description"),
-				rs.getDouble("total_expense"));
+				rs.getDouble("total_expense")).build();
 	});
 	
 	@Autowired
